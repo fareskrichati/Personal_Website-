@@ -34,3 +34,61 @@ chair(-.1,2.1);box(2.4,.9,.10,-6.5,1.7,-.6,dark);
 for(const x of [4.35,6.9]){for(const dx of [-1.2,1.2])for(const z of [3.8,4.6])box(.065,2.6,.065,x+dx,1.3,z,steel);for(let j=0;j<4;j++)box(2.48,.065,.86,x,.25+j*.72,4.2,red);}
 for(const x of [3.6,4.3,6.8])box(.46,.33,.48,x,.45,4.2,mat('#ab9677'));
 // Garage occupies the right end of the workshop, with its door on the end wall.
+box(.12,2.5,3.5,8.19,1.25,1.45,dark);
+for(let i=0;i<5;i++)box(.03,.035,3.45,8.11,.3+i*.5,1.45,steel);
+for(const z of [-.25,3.15])box(4,.08,.06,6.15,2.65,z,steel);
+box(.12,2.2,.9,8.18,1.1,4.1,wood);
+box(.14,1.35,.62,8.10,1.45,4.1,white);
+const vehicleStart=scene.children.length;
+box(2.05,.65,3.95,5.8,.65,-1.9,white);box(1.9,.70,2.3,5.8,1.28,-1.85,white);box(1.62,.05,1.8,5.8,1.66,-1.8,screen);box(1.7,.5,.04,5.8,1.29,-.68,screen);box(1.7,.48,.04,5.8,1.29,-3.02,screen);for(const x of [4.83,6.77]){box(.025,.45,1.8,x,1.28,-1.85,screen);for(const z of [-3.2,-.55]){const w=cyl(.4,.22,x,.4,z,dark);w.rotation.z=Math.PI/2;}}
+for(const x of [5.1,6.5])box(.35,.13,.035,x,.73,.10,mat('#f5e7b9'));
+
+const vehicleParts=scene.children.slice(vehicleStart);const vehicle=new THREE.Group();scene.add(vehicle);
+for(const part of vehicleParts){scene.remove(part);part.position.x-=5.8;part.position.z+=1.9;vehicle.add(part);}
+vehicle.rotation.y=Math.PI/2;vehicle.position.set(5.8,0,1.45);
+// Entrance wing: two offices side by side, then two bathrooms and kitchenette.
+box(6,.28,10,-11.3,-.2,0,mat('#c2cbd3'));
+box(5.8,.09,9.6,-11.3,.03,0,mat('#665e55'));
+box(.16,2.7,9.6,-14.3,1.35,0,plaster);
+box(6,2.7,.16,-11.3,1.35,-4.8,plaster);
+box(6,2.7,.16,-11.3,1.35,4.8,plaster);
+box(4.1,2.7,.15,-12.25,1.35,0,plaster);
+// Office-to-service partition, with openings into both offices.
+for(const z of [-4.15,-.25,4.15])box(.15,2.7,1.25,-10.2,1.35,z,plaster);
+box(.15,.3,9.6,-10.2,2.55,0,plaster);
+// Front glazing and entrance details, inset within the end wall.
+for(const z of [-2.4,2.4]){
+ box(.18,1.8,3.1,-14.19,1.65,z,mat('#c3d5da',{transparent:true,opacity:.45}));
+ for(const dz of [-1.55,0,1.55])box(.2,1.85,.055,-14.08,1.65,z+dz,white);
+ box(.2,.06,3.15,-14.08,2.57,z,white);
+}
+// Front office with lounge, desk and green rug.
+box(2.3,.12,.8,-12.65,.85,3.9,wood);chair(-12.6,2.9);box(.9,.5,.06,-12.65,1.2,4.1,screen);
+box(1.7,.03,2,-11.35,.1,1.65,mat('#286349'));box(.65,.4,1,-11.35,.3,1.65,wood);
+for(const z of [.6,2.7]){box(.85,.4,.8,-11.35,.35,z,white);box(.85,.65,.15,-11.35,.65,z+(z<2?-.38:.38),white);}
+// Adjacent reception office with L-shaped desk and guest chair.
+box(2.5,.12,.75,-12.3,.85,-3,wood);box(.75,.12,1.65,-11.4,.85,-2.45,wood);
+chair(-12.5,-3.85);chair(-11.8,-1.4);box(.8,.45,.06,-12.1,1.14,-3.1,screen);
+// Two bathrooms behind the lounge; passage and kitchen behind reception.
+box(2,2.7,.14,-9.25,1.35,0,plaster);box(2,2.7,.14,-9.25,1.35,2.4,plaster);
+for(const z of [1.2,3.6]){
+ box(.16,2.7,.75,-8.3,1.35,z-.8,plaster);box(.16,.35,1.55,-8.3,2.52,z,plaster);
+ box(.45,.65,.35,-9.85,.35,z,white);cyl(.24,.35,-9.5,.22,z,white);
+ box(.5,.12,.65,-8.75,.85,z+.65,white);box(.05,.65,.55,-8.45,1.5,z+.65,screen);
+ const door=box(.075,2.2,.85,-8.1,1.1,z,dark);door.rotation.y=-.5;
+}
+box(.65,.9,3,-9,.45,-3,wood);box(.75,.07,3.1,-9,.95,-3,white);
+box(.45,.025,.6,-9,1,-2.4,steel);box(.72,1.8,.75,-9,.9,-.95,white);
+// Workshop handwash basin at the bathroom wall.
+box(.55,.12,.75,-7.9,.85,2.4,white);for(const z of [2.1,2.7])box(.06,.8,.06,-7.65,.4,z,steel);
+// Workshop floor seams.
+for(let x=-8;x<8;x+=1.2)box(.012,.008,5.5,x,.03,1.9,mat('#a7aaa5'));
+function label(text,x,z){const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#ffffffed';ctx.fillRect(0,0,512,96);ctx.fillStyle='#1e446b';ctx.font='500 36px sans-serif';ctx.textAlign='center';ctx.fillText(text,256,60);const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));sprite.position.set(x,3.25,z);sprite.scale.set(2.8,.525,1);scene.add(sprite);}
+label('FRONT OFFICE',-11.3,2);label('OFFICES',-3.1,-3);label('WORKBENCH',-3,3.5);label('GARAGE',6,1.4);
+const views={overview:[[19,22,28],[-3,0,0]],front:[[-17,10,15],[-11,0,0]],offices:[[-4,7,8],[-3,1,-2.8]],workbench:[[-5,5,11],[-3,1,2.5]],garage:[[13,7,8],[5.5,.7,1.5]],top:[[-3,35,.01],[-3,0,0]]};
+function setView(name){camera.position.fromArray(views[name][0]);controls.target.fromArray(views[name][1]);controls.update();document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===name)));}
+setView('overview');document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));document.querySelector('#rotate').onclick=e=>{controls.autoRotate=!controls.autoRotate;e.target.setAttribute('aria-pressed',String(controls.autoRotate));};function zoom(f){const d=camera.position.clone().sub(controls.target);d.setLength(THREE.MathUtils.clamp(d.length()*f,controls.minDistance,controls.maxDistance));camera.position.copy(controls.target).add(d);controls.update();}document.querySelector('#zoom-in').onclick=()=>zoom(.8);document.querySelector('#zoom-out').onclick=()=>zoom(1.25);
+renderer.domElement.tabIndex=0;renderer.domElement.addEventListener('keydown',e=>{if(e.key==='+'||e.key==='=')zoom(.8);else if(e.key==='-')zoom(1.25);else if(e.key==='Home')setView('overview');else return;e.preventDefault();});
+new ResizeObserver(()=>{const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();}).observe(host);
+let visible=true;new IntersectionObserver(e=>visible=e[0].isIntersecting).observe(host);renderer.setAnimationLoop(()=>{if(visible){controls.update();renderer.render(scene,camera);}});
+} catch(e){document.querySelector('#error').hidden=false;console.error(e);}
